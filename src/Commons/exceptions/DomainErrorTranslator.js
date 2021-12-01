@@ -1,4 +1,6 @@
 const InvariantError = require('./InvariantError');
+const NotFoundError = require('./NotFoundError');
+const AuthenticationError = require('./AuthenticationError');
 
 const DomainErrorTranslator = {
   translate(error) {
@@ -17,6 +19,12 @@ DomainErrorTranslator._directories = {
   'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus string'),
   'DELETE_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('harus mengirimkan token refresh'),
   'DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus string'),
+  'NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan title dan body'),
+  'NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('title dan body harus string'),
+  'NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan content'),
+  'NEW_COMMENT.NOT_MEET_AUTHENTICATED_USER': new AuthenticationError('harus melakukan autentikasi user'),
+  'NEW_COMMENT.NOT_MEET_THREAD': new NotFoundError('thread resource tidak tersedia'),
+  'NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('content harus string'),
 };
 
 module.exports = DomainErrorTranslator;
