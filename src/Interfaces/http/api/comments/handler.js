@@ -15,9 +15,7 @@ class CommentsHandler {
     const { id: credentialUserId } = request.auth.credentials;
     const { threadId, any } = request.params;
 
-    if (any !== 'comments') {
-      throw new NotFoundError('resource tidak tersedia!');
-    }
+    if (any !== 'comments') throw new NotFoundError('resource tidak tersedia!');
 
     const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
     const addedComment = await addCommentUseCase

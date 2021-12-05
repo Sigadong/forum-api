@@ -5,7 +5,7 @@ describe('a DetailComment entities', () => {
     // Arrange
     const payload = {
       username: 'dicoding',
-      date: '19560101',
+      date: '2022-02-02',
       content: 'Dicoding Academy Indonesia',
     };
 
@@ -32,7 +32,7 @@ describe('a DetailComment entities', () => {
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
-      date: '19560101',
+      date: '2022-02-02',
       content: 'Dicoding Academy Indonesia',
       isDelete: false,
     };
@@ -52,7 +52,7 @@ describe('a DetailComment entities', () => {
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
-      date: '19560101',
+      date: '2022-02-02',
       content: 'Dicoding Academy Indonesia',
       isDelete: true,
     };

@@ -5,9 +5,10 @@ const ThreadsTableTestHelper = {
   async addThread({
     id = 'thread-123', title = 'dicoding', body = 'Dicoding Academy', owner = 'user-123',
   }) {
+    const date = new Date().toISOString();
     const query = {
-      text: 'INSERT INTO threads VALUES($1, $2, $3, $4)',
-      values: [id, title, body, owner],
+      text: 'INSERT INTO threads VALUES($1, $2, $3, $4, $5)',
+      values: [id, title, body, date, owner],
     };
 
     await pool.query(query);

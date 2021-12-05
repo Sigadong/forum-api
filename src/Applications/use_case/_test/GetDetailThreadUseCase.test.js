@@ -29,18 +29,18 @@ describe('GetDetailThreadUseCase', () => {
 
   it('should orchestrating get detail thread action correctly', async () => {
     // Arrange
-    const expectedGetCommentByThread = [
+    const expectedCommentByThread = [
       {
         id: 'comment-132',
         username: 'aws.dicoding',
-        date: '20211011',
+        date: '2022-02-02',
         content: 'Dicoding Academy Indonesia',
         is_delete: true,
       },
       {
         id: 'comment-123',
         username: 'dicoding_aws',
-        date: '20211012',
+        date: '2022-02-02',
         content: 'AWS X Dicoding',
         is_delete: false,
       },
@@ -51,8 +51,8 @@ describe('GetDetailThreadUseCase', () => {
       title: 'Dicoding Indonesia',
       body: 'Dicoding Academy',
       username: 'dicoding',
-      date: '19561211',
-      comments: expectedGetCommentByThread,
+      date: '2022-02-02',
+      comments: expectedCommentByThread,
     };
 
     const mockThreadRepository = new ThreadRepository();
@@ -61,7 +61,7 @@ describe('GetDetailThreadUseCase', () => {
     mockThreadRepository.getDetailThread = jest.fn()
       .mockImplementation(() => Promise.resolve(detailThreadPayload));
     mockCommentRepository.getCommentByThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedGetCommentByThread));
+      .mockImplementation(() => Promise.resolve(expectedCommentByThread));
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       commentRepository: mockCommentRepository,
