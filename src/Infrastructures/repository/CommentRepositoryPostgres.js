@@ -1,5 +1,8 @@
+const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
+const DetailComment = require('../../Domains/comments/entities/DetailComment');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -20,6 +23,51 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     return new AddedComment({ ...result.rows[0] });
+  }
+
+  async verifyCommentOwner(commentId, owner) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1',
+      values: [commentId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount)
+      throw new NotFoundError('comment tidak ditemukan!');
+
+    const comment = result.rows[0];
+    if (comment.owner !== owner)
+      throw new AuthorizationError('Anda tidak berhak untuk akses resource ini!');
+  }
+
+  async deleteComment(commentId) {
+    const isDelete = true;
+
+    const query = {
+      text: 'UPDATE comments SET is_delete = $1 WHERE id = $2 RETURNING id',
+      values: [isDelete, commentId],
+    };
+
+    await this._pool.query(query);
+  }
+
+  async getCommentByThread(threadId) {
+    const query = {
+      text: `SELECT comments.*, users.username AS username FROM comments 
+            JOIN users ON comments.owner = users.id WHERE thread_id = $1`,
+      values: [threadId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount)
+      throw new NotFoundError('comment tidak ditemukan!');
+
+    const comments = result.rows
+      .map((rowComment) => (new DetailComment({ ...rowComment, isDelete: rowComment.is_delete })));
+    return comments
+      .map((comment) => ({ ...comment }));
   }
 }
 

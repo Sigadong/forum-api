@@ -1,12 +1,13 @@
 const pool = require('../../database/postgres/pool');
+const container = require('../../container');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const TokenManagerTableTestHelper = require('../../../../tests/TokenManagerTableTestHelper');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
-const container = require('../../container');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const createServer = require('../createServer');
 
-describe('/authentications endpoint', () => {
+describe('/threads endpoint', () => {
   afterAll(async () => {
     await pool.end();
   });
@@ -95,6 +96,50 @@ describe('/authentications endpoint', () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual('title dan body harus string');
+    });
+  });
+
+  // GET DETAIL THREAD
+  describe('when GET /threads/{threadId}', () => {
+    it('should response 200 and get detail thread', async () => {
+      // Arrange
+      const server = await createServer(container);
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123', isDelete: true });
+      await CommentsTableTestHelper.addComment({ id: 'comment-132' });
+
+      // Action
+      const response = await server.inject({
+        url: '/threads/thread-123',
+        method: 'GET',
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.id).toBeDefined();
+    });
+
+    it('should response 404 if route not registered or thread not available', async () => {
+      // Arrange
+      const server = await createServer(container);
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
+
+      // Action
+      const response = await server.inject({
+        url: '/threads/thread-321',
+        method: 'GET',
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('thread tidak ditemukan!');
     });
   });
 });

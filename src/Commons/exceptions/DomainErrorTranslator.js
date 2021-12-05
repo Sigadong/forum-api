@@ -25,6 +25,10 @@ DomainErrorTranslator._directories = {
   'NEW_COMMENT.NOT_MEET_AUTHENTICATED_USER': new AuthenticationError('harus melakukan autentikasi user'),
   'NEW_COMMENT.NOT_MEET_THREAD': new NotFoundError('thread resource tidak tersedia'),
   'NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('content harus string'),
+  'DELETE_COMMENT_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus melampirkan commentId, threadId dan userId'),
+  'DELETE_COMMENT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('commentId, threadId dan userId harus string'),
+  'DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus melampirkan comment id, username, date, content'),
+  'DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('comment id, username, date, content harus string'),
 };
 
 module.exports = DomainErrorTranslator;

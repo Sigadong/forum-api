@@ -3,19 +3,19 @@ const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const CommentsTableTestHelper = {
   async addComment({
-    id = 'comment-123', content = 'Dicoding Academy Indonesia', threadId = 'thread-123', owner = 'user-123',
+    id = 'comment-123', content = 'Dicoding Academy Indonesia', threadId = 'thread-123', owner = 'user-123', isDelete = false,
   }) {
     const date = new Date().toISOString();
 
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5)',
-      values: [id, content, date, threadId, owner],
+      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6)',
+      values: [id, content, date, threadId, owner, isDelete],
     };
 
     await pool.query(query);
   },
 
-  async findCommentsById(id) {
+  async findCommentById(id) {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1',
       values: [id],

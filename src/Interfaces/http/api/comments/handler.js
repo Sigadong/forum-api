@@ -1,4 +1,5 @@
 const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
+const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
 const NotFoundError = require('../../../../Commons/exceptions/NotFoundError');
 
 class CommentsHandler {
@@ -6,6 +7,7 @@ class CommentsHandler {
     this._container = container;
 
     this.postCommentHandler = this.postCommentHandler.bind(this);
+    this.deteleCommentHandler = this.deteleCommentHandler.bind(this);
   }
 
   async postCommentHandler(request, h) {
@@ -14,7 +16,7 @@ class CommentsHandler {
     const { threadId, any } = request.params;
 
     if (any !== 'comments') {
-      throw new NotFoundError('thread resource tidak tersedia');
+      throw new NotFoundError('resource tidak tersedia!');
     }
 
     const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
@@ -29,6 +31,23 @@ class CommentsHandler {
     });
     response.code(201);
     return response;
+  }
+
+  // del
+  async deteleCommentHandler(request) {
+    const { threadId, any, commentId } = request.params;
+    const { id: credentialUserId } = request.auth.credentials;
+
+    if (any !== 'comments') {
+      throw new NotFoundError('resource tidak tersedia!');
+    }
+
+    const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
+    await deleteCommentUseCase.execute({ commentId, threadId, owner: credentialUserId });
+
+    return {
+      status: 'success',
+    };
   }
 }
 

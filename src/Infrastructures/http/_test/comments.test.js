@@ -7,7 +7,7 @@ const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelp
 const container = require('../../container');
 const createServer = require('../createServer');
 
-describe('/authentications endpoint', () => {
+describe('/comments endpoint', () => {
   afterAll(async () => {
     await pool.end();
   });
@@ -110,7 +110,7 @@ describe('/authentications endpoint', () => {
 
       // Action
       const response = await server.inject({
-        url: '/threads/thread-123/commentsss',
+        url: '/threads/thread-123/commentss',
         method: 'POST',
         payload: requestPayload,
         headers: {
@@ -122,7 +122,55 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread resource tidak tersedia');
+      expect(responseJson.message).toEqual('resource tidak tersedia!');
+    });
+  });
+
+  // DELETE
+  describe('when DELETE /threads/{threadId}/comments/{commentId}', () => {
+    it('should response 200 when comment success deleted', async () => {
+      // Arrange
+      const server = await createServer(container);
+      const accessToken = await TokenManagerTableTestHelper.getAccessToken();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123' });
+
+      // Action
+      const response = await server.inject({
+        url: '/threads/thread-123/comments/comment-123',
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+
+    it('should response 404 if route not registered', async () => {
+      // Arrange
+      const server = await createServer(container);
+      const accessToken = await TokenManagerTableTestHelper.getAccessToken();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123' });
+
+      // Action
+      const response = await server.inject({
+        url: '/threads/thread-123/commentss/comment-123',
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('resource tidak tersedia!');
     });
   });
 });

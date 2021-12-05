@@ -15,11 +15,13 @@ exports.up = (pgm) => {
     },
     thread_id: {
       type: 'VARCHAR(50)',
-      notNull: true,
     },
     owner: {
       type: 'VARCHAR(50)',
-      notNull: true,
+    },
+    is_delete: {
+      type: 'BOOLEAN',
+      default: false,
     },
   });
 
