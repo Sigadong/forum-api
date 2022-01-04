@@ -25,6 +25,18 @@ class CommentRepositoryPostgres extends CommentRepository {
     return new AddedComment({ ...result.rows[0] });
   }
 
+  async checkAvailabilityComment(commentId) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1',
+      values: [commentId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount)
+      throw new NotFoundError('comment tidak ditemukan!');
+  }
+
   async verifyCommentOwner(commentId, owner) {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1',
@@ -55,7 +67,7 @@ class CommentRepositoryPostgres extends CommentRepository {
   async getCommentByThread(threadId) {
     const query = {
       text: `SELECT comments.*, users.username AS username FROM comments 
-            JOIN users ON comments.owner = users.id WHERE thread_id = $1`,
+            JOIN users ON comments.owner = users.id WHERE thread_id = $1 ORDER BY comments.date ASC`,
       values: [threadId],
     };
 

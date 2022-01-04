@@ -8,6 +8,22 @@ const routes = (handler) => ([
     },
   },
   {
+    method: 'POST',
+    path: '/threads/{threadId}/{any}/{commentId}/replies',
+    handler: handler.postRepliesCommentHandler,
+    options: {
+      auth: 'forumapi_jwt',
+    },
+  },
+  {
+    method: 'DELETE',
+    path: '/threads/{threadId}/{any}/{commentId}/replies/{repliesId}',
+    handler: handler.deteleRepliesCommentHandler,
+    options: {
+      auth: 'forumapi_jwt',
+    },
+  },
+  {
     method: 'DELETE',
     path: '/threads/{threadId}/{any}/{commentId}',
     handler: handler.deteleCommentHandler,

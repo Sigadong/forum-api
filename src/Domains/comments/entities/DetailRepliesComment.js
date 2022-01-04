@@ -1,11 +1,11 @@
-class DetailComment {
+class DetailRepliesComment {
   constructor(payload) {
     this._verifyPayload(payload);
 
     this.id = payload.id;
     this.username = payload.username;
     this.date = payload.date;
-    this.content = (!payload.isDelete) ? payload.content : '**komentar telah dihapus**';
+    this.content = (!payload.isDelete) ? payload.content : '**balasan telah dihapus**';
   }
 
   _verifyPayload({ id, username, date, content }) {
@@ -18,4 +18,4 @@ class DetailComment {
   }
 }
 
-module.exports = DetailComment;
+module.exports = DetailRepliesComment;

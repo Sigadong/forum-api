@@ -5,6 +5,7 @@ const TokenManagerTableTestHelper = require('../../../../tests/TokenManagerTable
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 const createServer = require('../createServer');
 
 describe('/threads endpoint', () => {
@@ -105,9 +106,13 @@ describe('/threads endpoint', () => {
       // Arrange
       const server = await createServer(container);
       await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await UsersTableTestHelper.addUser({ id: 'user-132', username: 'Jhon' });
+      await UsersTableTestHelper.addUser({ id: 'user-321', username: 'Marry' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
-      await CommentsTableTestHelper.addComment({ id: 'comment-123', isDelete: true });
-      await CommentsTableTestHelper.addComment({ id: 'comment-132' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-132', owner: 'user-132' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123', owner: 'user-321', isDelete: true });
+      await RepliesTableTestHelper.addRepliesComment({ id: 'replies-132', commentId: 'comment-132', owner: 'user-321' });
+      await RepliesTableTestHelper.addRepliesComment({ id: 'replies-123', commentId: 'comment-132', owner: 'user-132' });
 
       // Action
       const response = await server.inject({

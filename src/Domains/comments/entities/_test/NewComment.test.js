@@ -17,7 +17,6 @@ describe('a NewComment entites', () => {
     const payload = {
       content: 'Dicoding Academy Indonesia',
       threadId: 'thread-123',
-      owner: 123,
     };
 
     // Action and Assert
@@ -28,7 +27,7 @@ describe('a NewComment entites', () => {
     // Arrange
     const payload = {
       content: 'Dicoding Academy Indonesia',
-      threadId: 123,
+      threadId: '',
       owner: 'user-123',
     };
 

@@ -11,14 +11,14 @@ class NewComment {
     if (!content)
       throw new Error('NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
 
-    if (typeof content !== 'string')
-      throw new Error('NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
-
-    if (!owner || typeof owner !== 'string')
+    if (!owner)
       throw new Error('NEW_COMMENT.NOT_MEET_AUTHENTICATED_USER');
 
-    if (!threadId || typeof threadId !== 'string')
+    if (!threadId)
       throw new Error('NEW_COMMENT.NOT_MEET_THREAD');
+
+    if (typeof content !== 'string' || typeof threadId !== 'string' || typeof owner !== 'string')
+      throw new Error('NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
   }
 }
 

@@ -1,5 +1,3 @@
-/* eslint-disable curly */
-/* eslint-disable nonblock-statement-body-position */
 class DeleteCommentUseCase {
   constructor({
     commentRepository,
