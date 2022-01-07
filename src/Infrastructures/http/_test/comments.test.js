@@ -98,32 +98,6 @@ describe('/comments endpoint', () => {
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual('content, threadId dan userId harus string');
     });
-
-    it('should response 404 if route not registered', async () => {
-      // Arrange
-      const requestPayload = {
-        content: 'Dicoding Academy Indonesia',
-      };
-      const server = await createServer(container);
-      const accessToken = await TokenManagerTableTestHelper.getAccessToken();
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
-
-      // Action
-      const response = await server.inject({
-        url: '/threads/thread-123/commentss',
-        method: 'POST',
-        payload: requestPayload,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('resource tidak tersedia!');
-    });
   });
 
   // DELETE

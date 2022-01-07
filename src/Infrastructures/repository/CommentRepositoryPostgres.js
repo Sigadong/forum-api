@@ -73,9 +73,6 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
 
-    if (!result.rowCount)
-      throw new NotFoundError('comment tidak ditemukan!');
-
     const comments = result.rows
       .map((rowComment) => (new DetailComment({ ...rowComment, isDelete: rowComment.is_delete })));
     return comments

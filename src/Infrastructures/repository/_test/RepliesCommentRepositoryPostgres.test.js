@@ -129,49 +129,43 @@ describe('RepliesCommentRepositoryPostgres', () => {
 
   // getRepliesCommentByThread
   describe('getRepliesCommentByThread function', () => {
-    it('should throw NotFoundError if threadId not available', async () => {
+    it('should persist and return get comments thread correctly', async () => {
       // Arrange
+      const repliesId = 'replies-123';
+      const threadId = 'thread-123';
       const repliesCommentRepositoryPostgres = new RepliesCommentRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({ id: 'user-123' });
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
+      await ThreadsTableTestHelper.addThread({ id: threadId });
       await CommentsTableTestHelper.addComment({ id: 'comment-123' });
-      await RepliesTableTestHelper.addRepliesComment({ id: 'replies-123' });
+      await RepliesTableTestHelper.addRepliesComment({ id: repliesId });
 
-      // Action & Assert
-      await expect(repliesCommentRepositoryPostgres.getRepliesCommentByThread('thread-321'))
-        .rejects.toThrow(NotFoundError);
-    });
+      // Action
+      const getRepliesComment = await repliesCommentRepositoryPostgres.getRepliesCommentByThread(threadId);
 
-    it('should not throw NotFoundError if threadId available', async () => {
-      // Arrange
-      const repliesCommentRepositoryPostgres = new RepliesCommentRepositoryPostgres(pool);
-      await UsersTableTestHelper.addUser({ id: 'user-123' });
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
-      await CommentsTableTestHelper.addComment({ id: 'comment-123' });
-      await RepliesTableTestHelper.addRepliesComment({ id: 'replies-123' });
-
-      // Action & Assert
-      await expect(repliesCommentRepositoryPostgres.getRepliesCommentByThread('thread-123'))
-        .resolves.not.toThrow(NotFoundError);
+      // Assert
+      expect(getRepliesComment).toHaveLength(1);
+      expect(getRepliesComment[0].id).toContain(repliesId);
     });
   });
 
   // Detele RepliesComment
   describe('deleteRepliesComment', () => {
-    it('should delete comment from database', async () => {
+    it('should delete replies comment from database', async () => {
       // Arrange
+      const repliesId = 'replies-123';
       await UsersTableTestHelper.addUser({ id: 'user-123' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
       await CommentsTableTestHelper.addComment({ id: 'comment-123' });
-      await RepliesTableTestHelper.addRepliesComment({ id: 'replies-123' });
+      await RepliesTableTestHelper.addRepliesComment({ id: repliesId });
       const repliesCommentRepositoryPostgres = new RepliesCommentRepositoryPostgres(pool);
 
       // Action
-      await repliesCommentRepositoryPostgres.deleteRepliesComment('replies-123');
+      await repliesCommentRepositoryPostgres.deleteRepliesComment(repliesId);
 
       // Assert
-      const replies = await RepliesTableTestHelper.findRepliesCommentById('replies-123');
+      const replies = await RepliesTableTestHelper.findRepliesCommentById(repliesId);
       expect(replies).toHaveLength(1);
+      expect(replies[0].is_delete).toStrictEqual(true);
     });
   });
 });

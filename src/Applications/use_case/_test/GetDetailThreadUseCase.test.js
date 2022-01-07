@@ -30,50 +30,43 @@ describe('GetDetailThreadUseCase', () => {
 
   it('should orchestrating get detail thread action correctly', async () => {
     // Arrange
-    const expectedRepliesCommentByThread = [
-      {
-        id: 'replies-122',
-        username: 'jhon',
-        date: '2022-02-04',
-        content: 'Hai marry!',
-        is_delete: false,
-      },
-      {
-        id: 'replies-123',
-        username: 'marry',
-        date: '2022-02-03',
-        content: 'Hello, Jhon!',
-        is_delete: true,
-      },
-    ];
-
-    const expectedCommentByThread = [
-      {
-        id: 'comment-132',
-        username: 'aws.dicoding',
-        date: '2022-02-02',
-        replies: expectedRepliesCommentByThread,
-        content: 'Dicoding Academy Indonesia',
-        is_delete: true,
-      },
-      {
-        id: 'comment-123',
-        username: 'dicoding_aws',
-        date: '2022-02-02',
-        content: 'Dicoding Academy',
-        replies: expectedRepliesCommentByThread,
-        is_delete: false,
-      },
-    ];
-
     const detailThreadPayload = {
       id: 'thread-123',
       title: 'Dicoding Indonesia',
       body: 'Dicoding Academy',
       username: 'dicoding',
       date: '2022-02-02',
-      comments: expectedCommentByThread,
     };
+
+    const expectedCommentByThread = [
+      {
+        id: 'comment-123',
+        username: 'aws.dicoding',
+        date: '2022-02-02',
+        content: 'Dicoding Academy Indonesia',
+      },
+      {
+        id: 'comment-132',
+        username: 'dicoding_aws',
+        date: '2022-02-02',
+        content: 'Dicoding Academy',
+      },
+    ];
+
+    const expectedRepliesCommentByThread = [
+      {
+        id: 'replies-122',
+        username: 'jhon',
+        date: '2022-02-04',
+        content: 'Hai marry!',
+      },
+      {
+        id: 'replies-123',
+        username: 'marry',
+        date: '2022-02-03',
+        content: 'Hello, Jhon!',
+      },
+    ];
 
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
@@ -97,7 +90,8 @@ describe('GetDetailThreadUseCase', () => {
       .execute({ threadId: detailThreadPayload.id });
 
     // Assert
-    expect(getDetailThread).toStrictEqual(detailThreadPayload);
+    expect(getDetailThread).toHaveProperty('id', detailThreadPayload.id);
+    expect(getDetailThread).toHaveProperty('comments');
     expect(mockThreadRepository.getDetailThread)
       .toBeCalledWith(detailThreadPayload.id);
     expect(mockCommentRepository.getCommentByThread)

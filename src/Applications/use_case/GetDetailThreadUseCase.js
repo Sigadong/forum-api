@@ -13,11 +13,10 @@ class GetDetailThreadUseCase {
     this._validatePayload(useCasePayload);
     const { threadId } = useCasePayload;
     const detailThread = await this._threadRepository.getDetailThread(threadId);
-    const commentThread = await this._commentRepository.getCommentByThread(threadId);
+    const commentsThread = await this._commentRepository.getCommentByThread(threadId);
     const replies = await this._repliesCommentRepository.getRepliesCommentByThread(threadId);
 
-    const comments = commentThread.map((comment) => ({ ...comment, replies }));
-    // console.log(comments);
+    const comments = commentsThread.map((comment) => ({ ...comment, replies }));
 
     return { ...detailThread, comments };
   }

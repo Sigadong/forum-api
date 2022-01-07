@@ -50,9 +50,6 @@ class RepliesCommentRepositoryPostgres extends RepliesCommentRepository {
 
     const result = await this._pool.query(query);
 
-    if (!result.rowCount)
-      throw new NotFoundError('replies tidak ditemukan!');
-
     const replies = result.rows
       .map((rowReply) => (new DetailRepliesComment({ ...rowReply, isDelete: rowReply.is_delete })));
     return replies
