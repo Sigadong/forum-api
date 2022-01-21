@@ -5,7 +5,7 @@ const CommentsTableTestHelper = {
   async addComment({
     id = 'comment-123', content = 'Dicoding Academy Indonesia', threadId = 'thread-123', owner = 'user-123', isDelete = false,
   }) {
-    const date = new Date().toISOString();
+    const date = '01-08-2022';
 
     const query = {
       text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6)',

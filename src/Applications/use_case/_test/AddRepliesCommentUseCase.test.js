@@ -30,12 +30,9 @@ describe('AddRepliesUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
-    mockRepliesCommentRepository.addRepliesComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedAddedRepliesComment));
-    mockCommentRepository.checkAvailabilityComment = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockThreadRepository.checkAvailabilityThread = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+    mockRepliesCommentRepository.addRepliesComment = jest.fn(() => Promise.resolve(expectedAddedRepliesComment));
+    mockCommentRepository.checkAvailabilityComment = jest.fn(() => Promise.resolve());
+    mockThreadRepository.checkAvailabilityThread = jest.fn(() => Promise.resolve());
 
     /** creating use case instance */
     const getRepliesCommentUseCase = new AddRepliesCommentUseCase({

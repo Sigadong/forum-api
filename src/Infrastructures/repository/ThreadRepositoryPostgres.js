@@ -14,7 +14,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const date = new Date().toISOString();
 
     const query = {
-      text: 'INSERT INTO threads VALUES($1, $2, $3, $4, $5) RETURNING id, title, owner',
+      text: 'INSERT INTO threads VALUES($1, $2, $3, $4,$5) RETURNING id, title, owner',
       values: [id, title, body, date, owner],
     };
 
@@ -47,8 +47,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     if (!result.rowCount)
       throw new NotFoundError('thread tidak ditemukan!');
 
-    const { id, title, body, date, username } = result.rows[0];
-    return { id, title, body, date, username };
+    return result.rows[0];
   }
 }
 

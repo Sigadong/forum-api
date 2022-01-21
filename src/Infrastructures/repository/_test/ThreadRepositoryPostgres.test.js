@@ -65,7 +65,6 @@ describe('ThreadRepositoryPostgres', () => {
     });
   });
 
-  // checkAvailabilityThread
   describe('checkAvailabilityThread function', () => {
     it('should throw NotFoundError if threadId not available', async () => {
       // Arrange
@@ -93,17 +92,27 @@ describe('ThreadRepositoryPostgres', () => {
   describe('getDetailThread function', () => {
     it('should persist and return get thread correctly', async () => {
       // Arrange
-      const threadId = 'thread-123';
+      const expedtedThread = {
+        id: 'thread-123',
+        title: 'dicoding',
+        body: 'Dicoding Academy',
+        date: '01-08-2022',
+        username: 'dicoding',
+      };
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({ id: 'user-123' });
-      await ThreadsTableTestHelper.addThread({ id: threadId });
+      await ThreadsTableTestHelper.addThread({ id: expedtedThread.id });
 
       // Action
-      const getThread = await threadRepositoryPostgres.getDetailThread(threadId);
+      const getThread = await threadRepositoryPostgres.getDetailThread(expedtedThread.id);
 
       // Assert
-      expect(getThread.id).toBe(threadId);
+      expect(getThread.id).toEqual(expedtedThread.id);
+      expect(getThread.title).toEqual(expedtedThread.title);
+      expect(getThread.body).toEqual(expedtedThread.body);
+      expect(getThread.date).toEqual(expedtedThread.date);
+      expect(getThread.username).toEqual(expedtedThread.username);
     });
 
     it('should throw NotFoundError if threadId not available', async () => {

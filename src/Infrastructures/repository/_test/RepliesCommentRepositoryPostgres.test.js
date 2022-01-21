@@ -72,7 +72,6 @@ describe('RepliesCommentRepositoryPostgres', () => {
     });
   });
 
-  // verifyRepliesCommentOwner
   describe('verifyRepliesCommentOwner function', () => {
     it('should throw NotFoundError if repliesId not available', async () => {
       // Arrange
@@ -127,28 +126,34 @@ describe('RepliesCommentRepositoryPostgres', () => {
     });
   });
 
-  // getRepliesCommentByThread
   describe('getRepliesCommentByThread function', () => {
     it('should persist and return get comments thread correctly', async () => {
       // Arrange
-      const repliesId = 'replies-123';
       const threadId = 'thread-123';
+      const expedtedReplies = {
+        id: 'comment-123',
+        username: 'aws_dicoding',
+        date: '01-08-2022',
+        content: 'Dicoding Academy Indonesia',
+      };
       const repliesCommentRepositoryPostgres = new RepliesCommentRepositoryPostgres(pool);
-      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'aws_dicoding' });
       await ThreadsTableTestHelper.addThread({ id: threadId });
       await CommentsTableTestHelper.addComment({ id: 'comment-123' });
-      await RepliesTableTestHelper.addRepliesComment({ id: repliesId });
+      await RepliesTableTestHelper.addRepliesComment({ id: expedtedReplies.id });
 
       // Action
       const getRepliesComment = await repliesCommentRepositoryPostgres.getRepliesCommentByThread(threadId);
 
       // Assert
       expect(getRepliesComment).toHaveLength(1);
-      expect(getRepliesComment[0].id).toContain(repliesId);
+      expect(getRepliesComment[0].id).toEqual(expedtedReplies.id);
+      expect(getRepliesComment[0].username).toEqual(expedtedReplies.username);
+      expect(getRepliesComment[0].date).toEqual(expedtedReplies.date);
+      expect(getRepliesComment[0].content).toEqual(expedtedReplies.content);
     });
   });
 
-  // Detele RepliesComment
   describe('deleteRepliesComment', () => {
     it('should delete replies comment from database', async () => {
       // Arrange

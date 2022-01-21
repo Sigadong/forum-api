@@ -38,7 +38,7 @@ describe('GetDetailThreadUseCase', () => {
       date: '2022-02-02',
     };
 
-    const expectedCommentByThread = [
+    const commentByThread = [
       {
         id: 'comment-123',
         username: 'aws.dicoding',
@@ -53,9 +53,9 @@ describe('GetDetailThreadUseCase', () => {
       },
     ];
 
-    const expectedRepliesCommentByThread = [
+    const repliesCommentByThread = [
       {
-        id: 'replies-122',
+        id: 'replies-132',
         username: 'jhon',
         date: '2022-02-04',
         content: 'Hai marry!',
@@ -68,16 +68,30 @@ describe('GetDetailThreadUseCase', () => {
       },
     ];
 
+    const comments = [
+      {
+        id: 'comment-123',
+        username: 'aws.dicoding',
+        date: '2022-02-02',
+        content: 'Dicoding Academy Indonesia',
+        replies: repliesCommentByThread,
+      },
+      {
+        id: 'comment-132',
+        username: 'dicoding_aws',
+        date: '2022-02-02',
+        content: 'Dicoding Academy',
+        replies: repliesCommentByThread,
+      },
+    ];
+
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockRepliesCommentRepository = new RepliesCommentRepository();
 
-    mockThreadRepository.getDetailThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(detailThreadPayload));
-    mockCommentRepository.getCommentByThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedCommentByThread));
-    mockRepliesCommentRepository.getRepliesCommentByThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedRepliesCommentByThread));
+    mockThreadRepository.getDetailThread = jest.fn(() => Promise.resolve(detailThreadPayload));
+    mockCommentRepository.getCommentByThread = jest.fn(() => Promise.resolve(commentByThread));
+    mockRepliesCommentRepository.getRepliesCommentByThread = jest.fn(() => Promise.resolve(repliesCommentByThread));
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       commentRepository: mockCommentRepository,
@@ -88,10 +102,13 @@ describe('GetDetailThreadUseCase', () => {
     // Action
     const getDetailThread = await getDetailThreadUseCase
       .execute({ threadId: detailThreadPayload.id });
-
     // Assert
-    expect(getDetailThread).toHaveProperty('id', detailThreadPayload.id);
-    expect(getDetailThread).toHaveProperty('comments');
+    expect(getDetailThread.id).toEqual(detailThreadPayload.id);
+    expect(getDetailThread.title).toEqual(detailThreadPayload.title);
+    expect(getDetailThread.body).toEqual(detailThreadPayload.body);
+    expect(getDetailThread.date).toEqual(detailThreadPayload.date);
+    expect(getDetailThread.username).toEqual(detailThreadPayload.username);
+    expect(getDetailThread.comments).toEqual(comments);
     expect(mockThreadRepository.getDetailThread)
       .toBeCalledWith(detailThreadPayload.id);
     expect(mockCommentRepository.getCommentByThread)

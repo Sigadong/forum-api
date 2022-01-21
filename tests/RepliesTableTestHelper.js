@@ -5,8 +5,7 @@ const RepliesTableTestHelper = {
   async addRepliesComment({
     id = 'replies-123', content = 'Dicoding Academy Indonesia', threadId = 'thread-123', commentId = 'comment-123', owner = 'user-123', isDelete = false,
   }) {
-    const date = new Date().toISOString();
-
+    const date = '01-08-2022';
     const query = {
       text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5, $6, $7)',
       values: [id, content, date, threadId, commentId, owner, isDelete],
