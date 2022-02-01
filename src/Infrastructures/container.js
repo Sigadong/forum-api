@@ -9,19 +9,23 @@ const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
-const UserRepository = require('../Domains/users/UserRepository');
-const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 const JwtTokenManager = require('./security/JwtTokenManager');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
+
+const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
 const RepliesCommentRepositoryPostgres = require('./repository/RepliesCommentRepositoryPostgres');
+const LikeCommentRepositoryPostgres = require('./repository/LikeCommentRepositoryPostgres');
+
+const UserRepository = require('../Domains/users/UserRepository');
 const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
 const ThreadRepository = require('../Domains/threads/ThreadRepository');
 const CommentRepository = require('../Domains/comments/CommentRepository');
+const LikeCommentRepository = require('../Domains/likes/LikeCommentRepository');
 const RepliesCommentRepository = require('../Domains/comments/RepliesCommentRepository');
 
 // use case
@@ -29,10 +33,10 @@ const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
 const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
-
 const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
 const AddRepliesCommentUseCase = require('../Applications/use_case/AddRepliesCommentUseCase');
+const AddLikeCommentUseCase = require('../Applications/use_case/AddLikeCommentUseCase');
 const GetDetailThreadUseCase = require('../Applications/use_case/GetDetailThreadUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
 const DeleteRepliesCommentUseCase = require('../Applications/use_case/DeleteRepliesCommentUseCase');
@@ -120,6 +124,20 @@ container.register([
   {
     key: RepliesCommentRepository.name,
     Class: RepliesCommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: LikeCommentRepository.name,
+    Class: LikeCommentRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -246,6 +264,27 @@ container.register([
         {
           name: 'repliesCommentRepository',
           internal: RepliesCommentRepository.name,
+        },
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddLikeCommentUseCase.name,
+    Class: AddLikeCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'likeCommentRepository',
+          internal: LikeCommentRepository.name,
         },
         {
           name: 'commentRepository',
