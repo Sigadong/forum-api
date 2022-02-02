@@ -353,6 +353,10 @@ container.register([
           name: 'repliesCommentRepository',
           internal: RepliesCommentRepository.name,
         },
+        {
+          name: 'likeCommentRepository',
+          internal: LikeCommentRepository.name,
+        },
       ],
     },
   },

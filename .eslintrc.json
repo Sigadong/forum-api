@@ -21,6 +21,8 @@
     "curly": "off",
     "no-restricted-syntax": "off",
     "object-curly-newline": "off",
+    "no-await-in-loop": "off",
+    "no-param-reassign": "off",
     "nonblock-statement-body-position": "off"
   }
 }
