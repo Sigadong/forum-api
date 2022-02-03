@@ -15,6 +15,7 @@ const PasswordHash = require('../Applications/security/PasswordHash');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 const JwtTokenManager = require('./security/JwtTokenManager');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
+
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
