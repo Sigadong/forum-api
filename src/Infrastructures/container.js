@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
 
-// service (repository, helper, manager, etc)
+// services (repository, helper, manager, etc)
 const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const PasswordHash = require('../Applications/security/PasswordHash');
