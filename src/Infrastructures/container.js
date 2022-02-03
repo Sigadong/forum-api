@@ -24,6 +24,7 @@ const AuthenticationRepository = require('../Domains/authentications/Authenticat
 const ThreadRepository = require('../Domains/threads/ThreadRepository');
 const CommentRepository = require('../Domains/comments/CommentRepository');
 const RepliesCommentRepository = require('../Domains/comments/RepliesCommentRepository');
+const LikeCommentRepository = require('../Domains/likes/LikeCommentRepository');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
