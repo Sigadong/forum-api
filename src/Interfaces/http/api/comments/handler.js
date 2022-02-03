@@ -69,17 +69,17 @@ class CommentsHandler {
   }
 
   async deteleCommentHandler(request) {
-    const { threadId, any, commentId } = request.params;
-    const { id: credentialUserId } = request.auth.credentials;
+    // const { threadId, any, commentId } = request.params;
+    // const { id: credentialUserId } = request.auth.credentials;
 
-    if (any !== 'comments') throw new NotFoundError('resource tidak tersedia!');
+    // if (any !== 'comments') throw new NotFoundError('resource tidak tersedia!');
 
-    const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
-    await deleteCommentUseCase.execute({ commentId, threadId, owner: credentialUserId });
+    // const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
+    // await deleteCommentUseCase.execute({ commentId, threadId, owner: credentialUserId });
 
-    return {
-      status: 'success',
-    };
+    // return {
+    //   status: 'success',
+    // };
   }
 }
 

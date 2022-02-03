@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
 
-// services (repository, helper, manager, etc)
+// service (repository, helper, manager, etc)
 const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -36,7 +36,7 @@ const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
 const AddRepliesCommentUseCase = require('../Applications/use_case/AddRepliesCommentUseCase');
 const GetDetailThreadUseCase = require('../Applications/use_case/GetDetailThreadUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
-// const DeleteRepliesCommentUseCase = require('../Applications/use_case/DeleteRepliesCommentUseCase');
+const DeleteRepliesCommentUseCase = require('../Applications/use_case/DeleteRepliesCommentUseCase');
 
 // creating container
 const container = createContainer();
