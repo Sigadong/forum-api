@@ -7,18 +7,16 @@ class LikeCommentHandler {
     this.putLikeCommentHandler = this.putLikeCommentHandler.bind(this);
   }
 
-  async putLikeCommentHandler(request, h) {
+  async putLikeCommentHandler(request) {
     const { id: credentialUserId } = request.auth.credentials;
     const { threadId, commentId } = request.params;
 
     const likeCommentUseCase = this._container.getInstance(AddLikeCommentUseCase.name);
     await likeCommentUseCase.execute({ threadId, commentId, owner: credentialUserId });
 
-    const response = h.response({
+    return {
       status: 'success',
-    });
-    response.code(200);
-    return response;
+    };
   }
 }
 
