@@ -30,7 +30,7 @@ describe('/likes endpoint', () => {
 
   // PUT likes
   describe('when PUT /threads/{threadId}/comments/{commentId}/likes', () => {
-    it('should response 200 when liked comment success', async () => {
+    it('should response 200 when like comment success', async () => {
       // Arrange
       const server = await createServer(container);
       const accessToken = await TokenManagerTableTestHelper.getAccessToken();
