@@ -11,7 +11,6 @@ class CommentsHandler {
     this.postCommentHandler = this.postCommentHandler.bind(this);
     this.postRepliesCommentHandler = this.postRepliesCommentHandler.bind(this);
     this.deteleCommentHandler = this.deteleCommentHandler.bind(this);
-    this.deteleRepliesCommentHandler = this.deteleRepliesCommentHandler.bind(this);
   }
 
   async postCommentHandler(request, h) {
