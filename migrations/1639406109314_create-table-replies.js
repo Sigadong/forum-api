@@ -1,7 +1,7 @@
 exports.up = (pgm) => {
   pgm.createTable('replies', {
     id: {
-      type: 'VARCHAR(30)',
+      type: 'VARCHAR(50)',
       primaryKey: true,
     },
     content: {
@@ -13,13 +13,13 @@ exports.up = (pgm) => {
       notNull: true,
     },
     thread_id: {
-      type: 'VARCHAR(30)',
+      type: 'VARCHAR(50)',
     },
     comment_id: {
-      type: 'VARCHAR(30)',
+      type: 'VARCHAR(50)',
     },
     owner: {
-      type: 'VARCHAR(30)',
+      type: 'VARCHAR(50)',
     },
     is_delete: {
       type: 'BOOLEAN',

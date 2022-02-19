@@ -1,7 +1,7 @@
 exports.up = (pgm) => {
   pgm.createTable('threads', {
     id: {
-      type: 'VARCHAR(30)',
+      type: 'VARCHAR(50)',
       primaryKey: true,
     },
     title: {
@@ -17,7 +17,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     owner: {
-      type: 'VARCHAR(30)',
+      type: 'VARCHAR(50)',
     },
   });
 
