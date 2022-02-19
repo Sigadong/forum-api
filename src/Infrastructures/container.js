@@ -12,7 +12,7 @@ const pool = require('./database/postgres/pool');
 const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const PasswordHash = require('../Applications/security/PasswordHash');
-const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+
 const JwtTokenManager = require('./security/JwtTokenManager');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
