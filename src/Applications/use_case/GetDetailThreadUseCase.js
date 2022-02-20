@@ -3,20 +3,22 @@ class GetDetailThreadUseCase {
     commentRepository,
     threadRepository,
     repliesCommentRepository,
+    likeCommentRepository,
   }) {
     this._commentRepository = commentRepository;
     this._threadRepository = threadRepository;
     this._repliesCommentRepository = repliesCommentRepository;
+    this._likeCommentRepository = likeCommentRepository;
   }
 
   async execute(useCasePayload) {
     this._validatePayload(useCasePayload);
     const { threadId } = useCasePayload;
     const detailThread = await this._threadRepository.getDetailThread(threadId);
-    const commentsThread = await this._commentRepository.getCommentByThread(threadId);
     const replies = await this._repliesCommentRepository.getRepliesCommentByThread(threadId);
-
-    const comments = commentsThread.map((comment) => ({ ...comment, replies }));
+    const commentsThread = await this._commentRepository.getCommentByThread(threadId);
+    const likeComment = await this._getLikeComment(commentsThread);
+    const comments = likeComment.map((comment) => ({ ...comment, replies }));
 
     return { ...detailThread, comments };
   }
@@ -27,6 +29,15 @@ class GetDetailThreadUseCase {
 
     if (typeof threadId !== 'string')
       throw new Error('THREAD_ID_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
+  }
+
+  async _getLikeComment(comments) {
+    for (let index = 0; index < comments.length; index += 1) {
+      const commentId = comments[index].id;
+      comments[index].likeCount = await this._likeCommentRepository
+        .getLikeCountByCommentId(commentId);
+    }
+    return comments;
   }
 }
 

@@ -34,6 +34,7 @@ describe('a DetailComment entities', () => {
       username: 'dicoding',
       date: '2022-02-02',
       content: 'Dicoding Academy Indonesia',
+      likeCount: 0,
       isDelete: false,
     };
 
@@ -45,6 +46,7 @@ describe('a DetailComment entities', () => {
     expect(detailComment.username).toEqual(payload.username);
     expect(detailComment.date).toEqual(payload.date);
     expect(detailComment.content).toEqual(payload.content);
+    expect(detailComment.likeCount).toEqual(0);
   });
 
   it('should create detailComment object correctly when isDelete value is true', () => {
@@ -54,6 +56,7 @@ describe('a DetailComment entities', () => {
       username: 'dicoding',
       date: '2022-02-02',
       content: 'Dicoding Academy Indonesia',
+      likeCount: 0,
       isDelete: true,
     };
 
@@ -65,5 +68,6 @@ describe('a DetailComment entities', () => {
     expect(detailComment.username).toEqual(payload.username);
     expect(detailComment.date).toEqual(payload.date);
     expect(detailComment.content).toEqual('**komentar telah dihapus**');
+    expect(detailComment.likeCount).toEqual(0);
   });
 });

@@ -1,3 +1,4 @@
+const LikeCommentRepository = require('../../../Domains/likes/LikeCommentRepository');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const RepliesCommentRepository = require('../../../Domains/comments/RepliesCommentRepository');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
@@ -43,12 +44,14 @@ describe('GetDetailThreadUseCase', () => {
         id: 'comment-123',
         username: 'aws.dicoding',
         date: '2022-02-02',
+        likeCount: 0,
         content: 'Dicoding Academy Indonesia',
       },
       {
         id: 'comment-132',
         username: 'dicoding_aws',
         date: '2022-02-02',
+        likeCount: 0,
         content: 'Dicoding Academy',
       },
     ];
@@ -68,12 +71,15 @@ describe('GetDetailThreadUseCase', () => {
       },
     ];
 
-    const comments = [
+    // const like = 3;
+
+    const likeComment = [
       {
         id: 'comment-123',
         username: 'aws.dicoding',
         date: '2022-02-02',
         content: 'Dicoding Academy Indonesia',
+        likeCount: 4,
         replies: repliesCommentByThread,
       },
       {
@@ -81,6 +87,7 @@ describe('GetDetailThreadUseCase', () => {
         username: 'dicoding_aws',
         date: '2022-02-02',
         content: 'Dicoding Academy',
+        likeCount: 2,
         replies: repliesCommentByThread,
       },
     ];
@@ -88,32 +95,38 @@ describe('GetDetailThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockRepliesCommentRepository = new RepliesCommentRepository();
+    const mockLikeCommentRepository = new LikeCommentRepository();
 
     mockThreadRepository.getDetailThread = jest.fn(() => Promise.resolve(detailThreadPayload));
     mockCommentRepository.getCommentByThread = jest.fn(() => Promise.resolve(commentByThread));
     mockRepliesCommentRepository.getRepliesCommentByThread = jest.fn(() => Promise.resolve(repliesCommentByThread));
+    mockLikeCommentRepository.getLikeCountByCommentId = jest.fn((commentId) => Promise.resolve(commentId === 'comment-123' ? 4 : 2));
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       commentRepository: mockCommentRepository,
       threadRepository: mockThreadRepository,
       repliesCommentRepository: mockRepliesCommentRepository,
+      likeCommentRepository: mockLikeCommentRepository,
     });
 
+    getDetailThreadUseCase._getLikeComment = jest.fn(() => Promise.resolve(likeComment));
+
     // Action
-    const getDetailThread = await getDetailThreadUseCase
-      .execute({ threadId: detailThreadPayload.id });
-    // Assert
+    const getDetailThread = await getDetailThreadUseCase.execute({ threadId: detailThreadPayload.id });
+
     expect(getDetailThread.id).toEqual(detailThreadPayload.id);
     expect(getDetailThread.title).toEqual(detailThreadPayload.title);
     expect(getDetailThread.body).toEqual(detailThreadPayload.body);
     expect(getDetailThread.date).toEqual(detailThreadPayload.date);
     expect(getDetailThread.username).toEqual(detailThreadPayload.username);
-    expect(getDetailThread.comments).toEqual(comments);
+    expect(getDetailThread.comments).toEqual(likeComment);
     expect(mockThreadRepository.getDetailThread)
       .toBeCalledWith(detailThreadPayload.id);
     expect(mockCommentRepository.getCommentByThread)
       .toBeCalledWith(detailThreadPayload.id);
     expect(mockRepliesCommentRepository.getRepliesCommentByThread)
       .toBeCalledWith(detailThreadPayload.id);
+    expect(getDetailThreadUseCase._getLikeComment)
+      .toBeCalledWith(commentByThread);
   });
 });
