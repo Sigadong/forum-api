@@ -16,6 +16,13 @@
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
     "no-unused-vars": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "no-param-reassign": "off",
+    "no-await-in-loop": "off",
+    "nonblock-statement-body-position": "off",
+    "curly": "off",
+    "no-restricted-syntax": "off",
+    "max-len": "off",
+    "object-curly-newline": "off"
   }
 }
