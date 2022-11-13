@@ -1,1 +1,14 @@
 # Forum API Server
+
+[
+  {
+    "hostname":"sharp-snake-77.a276.dcdg.xyz","ip":"3.26.222.106"
+  },
+ {
+  "hostname":"www.sharp-snake-77.a276.dcdg.xyz","ip":"3.26.222.106"
+ }
+]
+
+server_name sharp-snake-77.a276.dcdg.xyz www.sharp-snake-77.a276.dcdg.xyz
+  
+sudo certbot --nginx -d sharp-snake-77.a276.dcdg.xyz -d www.sharp-snake-77.a276.dcdg.xyz

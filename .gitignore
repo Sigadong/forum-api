@@ -5,3 +5,4 @@ coverage
 .idea
 forum-api-sever.pem
 config/database/test.json
+note.txt
